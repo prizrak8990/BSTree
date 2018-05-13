@@ -1,14 +1,12 @@
- 
- 
-//
-// Created by DELL on 07.03.2018.  //
-
 #include<iostream>
 #include "BSTree.hpp"
+#include <fstream>
 using namespace std;
 using namespace BSTree;
 
 Tree::Tree() { root = nullptr; }
+
+
 
 bool Tree::insert(int value) {
     if (root == nullptr) {
@@ -41,22 +39,27 @@ bool Tree::insert(int value) {
 
 }
 
-void Tree::printEl ( Node *node ,int deep) {
 
+void Tree::printEl ( Node *node ,int ch) {
     if (node == nullptr) {
         cout << "Tree is empty" << endl;
     } else {
         if (node->right != nullptr)
-            printEl(node->right, deep + 1);
-        for (int i = 0; i < deep; i++) {
+            printEl(node->right, ch + 1);
+        for (int i = 0; i < ch; i++) {
             cout << "   ";
         }
         if ((node->data) != (root->data))
             cout << "-";
+
         cout << node->data << endl;
         if (node->left != nullptr)
-            printEl(node->left, deep + 1);
+            printEl(node->left, ch + 1);
     }
+}
+
+void Tree::print() {
+    printEl(root, 0);
 }
 
 void Tree::SimmetricGo(Node* node) {
@@ -79,6 +82,7 @@ void Tree::DirectGo(Node* node) {
         DirectGo(node->right);
     }
 }
+
 void Tree::direct()  {
     DirectGo(root);
 }
@@ -94,10 +98,6 @@ void Tree::back()  {
     BackGo(root);
 }
 
-void Tree::print() {
-    printEl(root, 0);
-}
-
 void Tree::destroyTree ( Node *node){
     if(node) {
         destroyTree(node->left);
@@ -105,6 +105,96 @@ void Tree::destroyTree ( Node *node){
         delete node;
     }
     node=nullptr;
+}
+
+void Tree::save_tree(ofstream &f, Node *node, int level)
+{
+    if (node!=nullptr) {
+        if (node->right!=nullptr)
+            save_tree (f,node->right, level+1);
+        for (int i=0; i< level; i++) {
+            f<< "   ";
+        }
+        if ((node->data)!=(root->data))
+            f<< "--";
+        f<< node->data << std::endl;
+        if (node->left!=nullptr)
+            save_tree (f,node->left, level+1);
+    }
+}
+
+void Tree::infileEl(Node*node){
+    ofstream fout;
+    fout.open("BinTree.txt");
+    save_tree(fout,node,0);
+}
+
+void Tree::savetofile(){
+    infileEl(root);
+}
+
+void Tree::fromfileEl(){
+    ifstream File("BinTree.txt");
+    if (!File.is_open())
+        cout<<"error";
+    string a;
+    getline (File,a);
+    int countEL=0;
+    for (int i=0; i< a.length(); i++) {
+        if (a[i]==' ')
+            countEL++;
+    }
+    File.close();
+    File.open("BinTree.txt");
+    for (int i=0; i<=countEL; i++) {
+        File >> a;
+        insert (atoi( a.data()));
+    }
+    File.close();
+}
+
+void Tree::uploadfromfile() {
+    fromfileEl();
+}
+
+bool Tree::proverka_uzla(int n){
+    Node * current =root;
+    while(current !=nullptr){
+        if (current->data==n)
+            return true;
+        else {
+            if (current->data<n)
+                current=current->right;
+            else
+                current=current->left;
+        }
+    }
+}
+
+
+bool Tree::delete_number(int number){
+    Delete_number(root, number);
+}
+
+bool Tree::Delete_number(Node*& root, int number) {
+    if (root == nullptr) {
+        return root;
+    }
+    if (number < root->data) {
+        root->left;
+        Delete_number(root->left, number);
+    } else if (number > root->data) {
+        root->right;
+        Delete_number(root->right, number);
+    } else if (root->left != nullptr && root->right != nullptr) {
+        root->data = root->right->data;
+        root->right;
+        Delete_number(root->right, root->data);
+    } else if (root->left != nullptr)
+        root = root->left;
+    else
+        root = root->right;
+    return true;
 }
 
 Tree::~Tree(){
