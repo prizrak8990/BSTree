@@ -1,28 +1,21 @@
-//
-// Created by DELL on 07.03.2018.
-//
-
-#ifndef HOMEWORK_1_SECOND_SEMESTR_BSTREE_H
-#define HOMEWORK_1_SECOND_SEMESTR_BSTREE_H
-
-#endif //HOMEWORK_1_SECOND_SEMESTR_BSTREE_H
-
 namespace BSTree {
     struct Node {
         int data;
         Node *left;
         Node *right;
-//      Tree *p;
     };
 
     class Tree {
         Node *root;
-
-        void printEl(Node* node, int deep);
+        void printEl(Node* node, int a);
         void destroyTree(Node*node) ;
         void DirectGo(Node* node);
         void SimmetricGo(Node* root);
         void BackGo(Node* root);
+        void infileEl(Node*root);
+        void fromfileEl();
+        void save_tree(std::ofstream &File,  Node * root,int  space);
+        bool Delete_number(Node*& node, int number);
     public:
         Tree();
         bool insert(int value);
@@ -30,7 +23,10 @@ namespace BSTree {
         void direct();
         void simmetric();
         void back();
+        void savetofile();
+        void uploadfromfile();
+        bool delete_number(int number);
+        bool proverka_uzla(int n);
         ~Tree();
     };
 }
- 
