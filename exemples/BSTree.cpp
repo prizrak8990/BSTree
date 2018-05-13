@@ -1,10 +1,8 @@
 #include <iostream>
-#include <cstdlib>
 #include "BSTree.hpp"
-
+#include <fstream>
 using namespace std;
 using namespace BSTree;
-
 
 
 void choice(){
@@ -15,7 +13,7 @@ void choice(){
     cout<<"5. Сохранить дерево в файл"<<endl;
     cout<<"6. Загрузить дерево из файла"<<endl;
     cout<<"7. Проверить наличие узла"<<endl;
-    cout<<"8. Завершить работу программы"<<endl<<endl;
+    cout<<"8. Завершить работу программы"<<endl;
 };
 
 bool endPr(){
@@ -45,47 +43,63 @@ int main(int argc, char* argv[]) {
     }
     int ch=0;
     bool is_done=false;
-    while (! is_done) {
+    while (!is_done) {
         choice();
-        cin >> ch;
-        switch (ch) {
+        cin>>ch;
+        switch(ch){
             case 1:
                 tr.print();
                 break;
             case 2:
-                cout << "1. Прямой обход" << endl << endl;
-                cout << "2. Поперечный обход" << endl << endl;
-                cout << "3. Обратный обход" << endl << endl;
+                cout << "1. Прямой обход"<< endl;
+                cout << "2. Поперечный обход" << endl;
+                cout << "3. Обратный обход" << endl;
                 cin >> ch1;
                 switch (ch1) {
                     case 1:
                         tr.direct();
-                        cout << endl;
+                        cout<<endl;
                         break;
                     case 2:
                         tr.simmetric();
-                        cout << endl;
+                        cout<<endl;
                         break;
                     case 3:
                         tr.back();
-                        cout << endl;
+                        cout<<endl;
                         break;
                     default:
                         cout << "Неизвестная команда";
                 }
                 break;
             case 3:
+                cout<<"введите число"<<endl;
+                int chislo;
+                cin>>chislo;
+                tr.insert(chislo);
                 break;
             case 4:
+                cout<<"Введите число, которое нужно удалить"<<endl;
+                int number;
+                cin>>chislo;
+                tr.delete_number(number);
                 break;
             case 5:
+                tr.savetofile();
                 break;
             case 6:
+                tr.uploadfromfile();
                 break;
             case 7:
+                cout<<"введите число"<<endl;
+                int n;
+                cin>>n;
+                if (tr.proverka_uzla(n))
+                    cout<<"такой элемент присутствует "<<endl;
+                else
+                    cout<<"элемент не найден"<<endl;
                 break;
-            case 8:
-            {
+            case 8: {
                 if (endPr()) {
                     is_done = true;
                 }
